@@ -1,8 +1,11 @@
 package kucoin
 
 import (
+	"encoding/json"
 	"testing"
 	"time"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestApiService_Symbols(t *testing.T) {
@@ -309,4 +312,52 @@ func TestApiService_KLines(t *testing.T) {
 			t.Error("Invalid length of rate")
 		}
 	}
+}
+
+func TestWebsocket_KLines(t *testing.T) {
+	msg := `
+	{
+		"type":"message",
+		"topic":"/market/candles:BTC-USDT_1hour",
+		"subject":"trade.candles.update",
+		"data":{
+			"symbol":"BTC-USDT",   
+			"candles":[
+				"1589968800", 
+				"9786.9",   
+				"9740.8",      
+				"9806.1",     
+				"9732",       
+				"27.45649579",  
+				"268280.09830877"
+			],
+			"time":1589970010253893337 
+		}
+	}`
+
+	res := &WebSocketDownstreamMessage{}
+
+	err := json.Unmarshal([]byte(msg), res)
+	if err != nil {
+		t.Error(err)
+	}
+
+	wsKline := &WsKLineModel{}
+
+	err = res.ReadData(wsKline)
+	if err != nil {
+		t.Error(err)
+	}
+
+	assert.Equal(t, "BTC-USDT", wsKline.Symbol)
+	assert.Equal(t, uint64(1589970010253893337), wsKline.Time)
+	assert.Equal(t, []string{
+		"1589968800",
+		"9786.9",
+		"9740.8",
+		"9806.1",
+		"9732",
+		"27.45649579",
+		"268280.09830877",
+	}, wsKline.Candles)
 }

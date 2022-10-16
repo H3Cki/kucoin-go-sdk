@@ -204,7 +204,7 @@ func (wc *WebSocketClient) Connect() (<-chan *WebSocketDownstreamMessage, <-chan
 	q := url.Values{}
 	q.Add("connectId", IntToString(time.Now().UnixNano()))
 	q.Add("token", wc.token.Token)
-	if wc.token.AcceptUserMessage == true {
+	if wc.token.AcceptUserMessage {
 		q.Add("acceptUserMessage", "true")
 	}
 	u := fmt.Sprintf("%s?%s", s.Endpoint, q.Encode())

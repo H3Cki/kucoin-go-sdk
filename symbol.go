@@ -203,12 +203,20 @@ func (as *ApiService) TradeHistories(symbol string) (*ApiResponse, error) {
 	return as.Call(req)
 }
 
-// KLineModel represents the k lines for a symbol.
-// Rates are returned in grouped buckets based on requested type.
 type KLineModel []string
 
-// A KLinesModel is the set of *KLineModel.
 type KLinesModel []*KLineModel
+
+// WsKLineModel represents the k lines for a symbol returned from websocket
+// Rates are returned in grouped buckets based on requested type.
+type WsKLineModel struct {
+	Time    uint64   `json:"time"`
+	Symbol  string   `json:"symbol"`
+	Candles []string `json:"candles"`
+}
+
+// A WsKLinesModel is the set of *KLineModel returned from websocket
+type WsKLinesModel []*WsKLineModel
 
 // KLines returns the k lines for a symbol.
 // Data are returned in grouped buckets based on requested type.
