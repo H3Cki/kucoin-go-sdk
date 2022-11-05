@@ -19,7 +19,7 @@ type CreateOrderModel struct {
 	Price       string `json:"price,omitempty"`
 	Size        string `json:"size,omitempty"`
 	TimeInForce string `json:"timeInForce,omitempty"`
-	CancelAfter int64 `json:"cancelAfter,omitempty"`
+	CancelAfter int64  `json:"cancelAfter,omitempty"`
 	PostOnly    bool   `json:"postOnly,omitempty"`
 	Hidden      bool   `json:"hidden,omitempty"`
 	IceBerg     bool   `json:"iceberg,omitempty"`
@@ -113,7 +113,7 @@ type OrderModel struct {
 	Hidden        bool   `json:"hidden"`
 	IceBerg       bool   `json:"iceberg"`
 	VisibleSize   string `json:"visibleSize"`
-	CancelAfter   int64 `json:"cancelAfter"`
+	CancelAfter   int64  `json:"cancelAfter"`
 	Channel       string `json:"channel"`
 	ClientOid     string `json:"clientOid"`
 	Remark        string `json:"remark"`
@@ -268,4 +268,26 @@ func (as *ApiService) CancelStopOrderBy(params map[string]string) (*ApiResponse,
 func (as *ApiService) CreateMarginOrder(o *CreateOrderModel) (*ApiResponse, error) {
 	req := NewRequest(http.MethodPost, "/api/v1/margin/order", o)
 	return as.Call(req)
+}
+
+/// implement order change model
+
+type OrderChangeModel struct {
+	OrderID       string `json:"orderId,omitempty"`
+	ClientOrderID string `json:"clientOid,omitempty"`
+	TradeID       string `json:"tradeId,omitempty"`
+
+	Symbol    string `json:"symbol,omitempty"`
+	Side      string `json:"side,omitempty"`
+	Status    string `json:"status,omitempty"`
+	Type      string `json:"type,omitempty"`
+	Liquidity string `json:"liquidity,omitempty"`
+	OrderTime int64  `json:"orderTime,omitempty"`
+
+	Price      string `json:"price,omitempty"`
+	Size       string `json:"size,omitempty"`
+	FilledSize string `json:"filledSize,omitempty"`
+	MatchPrice string `json:"matchPrice,omitempty"`
+	MatchSize  string `json:"matchSize,omitempty"`
+	RemainSize string `json:"remainSize,omitempty"`
 }
